@@ -13,7 +13,7 @@ import Box from './Box.vue'
 import { gameRow, gameCol, startGame } from '../game'
 import { reactive } from 'vue'
 
-const map = reactive({})
+const map = reactive([])
 
 startGame(map)
 </script>

@@ -1,34 +1,42 @@
 export * from './config'
-import { initMap } from './map'
+import { initMap, addBoxToMap, eliminate } from './map'
 import { render } from './render'
+import { Box, createBox } from './Box'
 import { addTicker } from './ticker'
 import { intervalTimer } from './utils'
-import { getBoxBottomPoints } from './matrix'
-import { gameRow } from './config'
-import { hitBorder } from './hit'
+import { hitBottomBorder, hitBottomBox } from './hit'
 export function startGame(map) {
   initMap(map)
-  const box = {
-    x: 0,
-    y: 0,
-    shape: [
-      [1, 1],
-      [1, 1]
-    ]
-  }
   const isDownMove = intervalTimer()
+  let activeBox = createBox()
   function handleTicker(n) {
     if (isDownMove(n, 1000)) {
-      if (hitBorder(box)) {
+      if (hitBottomBorder(activeBox) || hitBottomBox(activeBox, map)) {
+        //为了不让box reset
+        //box->map->-1
+        addBoxToMap(activeBox, map)
+        eliminate(map)
+        activeBox = createBox()
         return
       }
-      box.y++
+      activeBox.y++
     }
-    render(box, map)
+    render(activeBox, map)
   }
   window.addEventListener('keydown', (e) => {
-    if (e.code === 'ArrowDown') {
-      box.y++
+    switch (e.code) {
+      case 'ArrowLeft':
+        activeBox.x--
+        break
+      case 'ArrowRight':
+        activeBox.x++
+        break
+      case 'ArrowUp':
+        //box->shape->rotate
+        activeBox.rotate()
+        break
+      default:
+        break
     }
   })
 

@@ -1,4 +1,4 @@
-import { hitBorder } from '../game/hit'
+import { hitBottomBorder, hitBottomBox } from '../game/hit'
 
 test('当box到达底部时,应该返回true', () => {
   const box = {
@@ -19,5 +19,27 @@ test('当box到达底部时,应该返回true', () => {
     [0, 0, 0, 0, 0, 0]
   ]
 
-  expect(hitBorder(box)).toBe(true)
+  expect(hitBottomBorder(box)).toBe(true)
+})
+test('当box底部碰到其他的box的时候,应该返回true', () => {
+  const box = {
+    x: 0,
+    y: 0,
+    shape: [
+      [0, 1, 0],
+      [1, 1, 0],
+      [1, 0, 0]
+    ]
+  }
+
+  const map = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, -1, 0, 0, 0, 0],
+    [-1, -1, 0, 0, 0, 0],
+    [-1, 0, 0, 0, 0, 0]
+  ]
+
+  expect(hitBottomBox(box, map)).toBe(false)
 })
