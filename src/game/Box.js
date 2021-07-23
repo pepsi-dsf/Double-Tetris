@@ -27,6 +27,7 @@ export class Box {
 }
 const boxInfos = {
   0: {
+    type: 0,
     shape: [
       [1, 1],
       [1, 1]
@@ -34,6 +35,8 @@ const boxInfos = {
   },
 
   1: {
+    type: 1,
+
     shape: [
       [1, 0, 0],
       [1, 1, 0],
@@ -43,6 +46,7 @@ const boxInfos = {
     rotateStrategy: [rotate, (m) => rotate(rotate(rotate(m)))]
   },
   2: {
+    type: 2,
     shape: [
       [1, 0, 0],
       [1, 0, 0],
@@ -55,9 +59,19 @@ const boxInfos = {
 //工厂模式
 export function createBox() {
   let box = new Box()
-  const { shape, rotateStrategy } = getRandomBoxInfo()
+  const { shape, rotateStrategy, type } = getRandomBoxInfo()
 
   box.shape = shape
+  box.type = type
+  box.setRotateStrategy(rotateStrategy)
+  return box
+}
+export function createBoxByType(key) {
+  let box = new Box()
+  const { shape, rotateStrategy, type } = boxInfos[key]
+
+  box.shape = shape
+  box.type = type
   box.setRotateStrategy(rotateStrategy)
   return box
 }
